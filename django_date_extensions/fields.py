@@ -1,10 +1,13 @@
-import time, re, datetime
+import time
+import re
+import datetime
 from datetime import date
 from django_date_extensions.widgets import PrettyDateInput
 from django.db import models
 from django import forms
 from django.forms import ValidationError
 from django.utils import dateformat
+
 
 class ApproximateDate(object):
     """A date object that accepts 0 for month or day to mean we don't
@@ -28,10 +31,10 @@ class ApproximateDate(object):
             raise ValueError("You must specify a year")
 
         self.future = future
-        self.past   = past
-        self.year   = year
-        self.month  = month
-        self.day    = day
+        self.past = past
+        self.year = year
+        self.month = month
+        self.day = day
 
     def __repr__(self):
         if self.future or self.past:
@@ -72,12 +75,12 @@ class ApproximateDate(object):
         if other is None:
             return False
         elif self.future or other.future:
-            if self.future: 
+            if self.future:
                 return False   # regardless of other.future it won't be less
             else:
                 return True    # we were not in future so they are
         elif self.past or other.past:
-            if other.past: 
+            if other.past:
                 return False   # regardless of self.past it won't be more
             else:
                 return True    # we were not in past so they are
@@ -94,13 +97,14 @@ class ApproximateDate(object):
 
     def __ge__(self, other):
         return self > other or self == other
-    
+
     def __len__(self):
-        return len( self.__repr__() )
+        return len(self.__repr__())
 
 ansi_date_re = re.compile(r'^\d{4}-\d{1,2}-\d{1,2}$')
 
-class ApproximateDateField(models.CharField, metaclass=models.SubfieldBase):
+
+class ApproximateDateField(models.CharField):
     """A model field to store ApproximateDate objects in the database
        (as a CharField because MySQLdb intercepts dates from the
        database and forces them to be datetime.date()s."""
@@ -174,6 +178,7 @@ YEAR_INPUT_FORMATS = (
     '%Y',                               # '2006'
 )
 
+
 # TODO: Expand to work more like my PHP strtotime()-using function
 class ApproximateDateFormField(forms.fields.Field):
     def __init__(self, max_length=10, *args, **kwargs):
@@ -220,7 +225,7 @@ DAY_MONTH_INPUT_FORMATS = (
 # year if the day is before the current date). If future=False, it does
 # the same but in the past.
 class PrettyDateField(forms.fields.Field):
-    widget = PrettyDateInput 
+    widget = PrettyDateInput
 
     def __init__(self, future=None, *args, **kwargs):
         self.future = future
