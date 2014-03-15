@@ -16,17 +16,16 @@ class ApproximateDate(object):
         if future and past:
             raise ValueError("Can't be both future and past")
         elif future or past:
-            d = None
             if year or month or day:
                 raise ValueError("Future or past dates can have no year, month or day")
         elif year and month and day:
-            d = date(year, month, day)
+            date(year, month, day)
         elif year and month:
-            d = date(year, month, 1)
+            date(year, month, 1)
         elif year and day:
             raise ValueError("You cannot specify just a year and a day")
         elif year:
-            d = date(year, 1, 1)
+            date(year, 1, 1)
         else:
             raise ValueError("You must specify a year")
 
@@ -154,7 +153,7 @@ class ApproximateDateField(models.CharField):
         return self.get_db_prep_value(value)
 
     def formfield(self, **kwargs):
-        defaults = { 'form_class': ApproximateDateFormField }
+        defaults = {'form_class': ApproximateDateFormField}
         defaults.update(kwargs)
         return super(ApproximateDateField, self).formfield(**defaults)
 
@@ -171,19 +170,19 @@ class ApproximateDateField(models.CharField):
 
 # The same as the built-in Django one, but with the d/m/y ones the right way round ;)
 DATE_INPUT_FORMATS = (
-    '%Y-%m-%d', '%d/%m/%Y', '%d/%m/%y', # '2006-10-25', '25/10/2006', '25/10/06'
-    '%b %d %Y', '%b %d, %Y',            # 'Oct 25 2006', 'Oct 25, 2006'
-    '%d %b %Y', '%d %b, %Y',            # '25 Oct 2006', '25 Oct, 2006'
-    '%B %d %Y', '%B %d, %Y',            # 'October 25 2006', 'October 25, 2006'
-    '%d %B %Y', '%d %B, %Y',            # '25 October 2006', '25 October, 2006'
+    '%Y-%m-%d', '%d/%m/%Y', '%d/%m/%y',     # '2006-10-25', '25/10/2006', '25/10/06'
+    '%b %d %Y', '%b %d, %Y',                # 'Oct 25 2006', 'Oct 25, 2006'
+    '%d %b %Y', '%d %b, %Y',                # '25 Oct 2006', '25 Oct, 2006'
+    '%B %d %Y', '%B %d, %Y',                # 'October 25 2006', 'October 25, 2006'
+    '%d %B %Y', '%d %B, %Y',                # '25 October 2006', '25 October, 2006'
 )
 MONTH_INPUT_FORMATS = (
-    '%m/%Y',                         # '10/2006'
-    '%b %Y', '%Y %b',                # 'Oct 2006', '2006 Oct'
-    '%B %Y', '%Y %B',                # 'October 2006', '2006 October'
+    '%m/%Y',                                # '10/2006'
+    '%b %Y', '%Y %b',                       # 'Oct 2006', '2006 Oct'
+    '%B %Y', '%Y %B',                       # 'October 2006', '2006 October'
 )
 YEAR_INPUT_FORMATS = (
-    '%Y',                               # '2006'
+    '%Y',                                   # '2006'
 )
 
 
@@ -222,13 +221,14 @@ class ApproximateDateFormField(forms.fields.Field):
         raise ValidationError('Please enter a valid date.')
 
 DAY_MONTH_INPUT_FORMATS = (
-    '%m-%d', '%d/%m', # '10-25', '25/10'
-    '%b %d', '%d %b', # 'Oct 25', '25 Oct'
-    '%B %d', '%d %B', # 'October 25', '25 October'
+    '%m-%d', '%d/%m',  # '10-25', '25/10'
+    '%b %d', '%d %b',  # 'Oct 25', '25 Oct'
+    '%B %d', '%d %B',  # 'October 25', '25 October'
 )
 
+
 # PrettyDateField - same as DateField but accepts slightly more input,
-# like ApproximateDateFormField above. If initialised with future=True,
+# like ApproximateDateFormField above. If initialized with future=True,
 # it will assume a date without year means the current year (or the next
 # year if the day is before the current date). If future=False, it does
 # the same but in the past.
@@ -280,4 +280,3 @@ class PrettyDateField(forms.fields.Field):
                 continue
 
         raise ValidationError('Please enter a valid date.')
-
