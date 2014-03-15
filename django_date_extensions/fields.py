@@ -158,6 +158,14 @@ class ApproximateDateField(models.CharField):
         defaults.update(kwargs)
         return super(ApproximateDateField, self).formfield(**defaults)
 
+    def south_field_triple(self):
+        "Returns a suitable description of this field for South."
+        # We'll just introspect the _actual_ field.
+        from south.modelsinspector import introspector
+        field_class = "django.db.models.fields.CharField"
+        args, kwargs = introspector(self)
+        return (field_class, args, kwargs)
+
 #    def get_db_prep_lookup(self, lookup_type, value):
 #        pass
 
